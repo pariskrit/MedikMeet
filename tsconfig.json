@@ -11,7 +11,8 @@
       "@screens/*": ["src/pages/*"],
       "@assets/*": ["src/assets/*"],
       "@services/*": ["src/services/*"],
-      "@interfaces/*": ["src/interfaces/*"]
+      "@interfaces/*": ["src/interfaces/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],

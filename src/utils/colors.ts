@@ -1,0 +1,7 @@
+export const primaryColor = '#5064ff'
+export const secondaryColor = 'rgb(255, 45, 85)'
+export const backgroundColor = 'rgb(242, 242, 242)'
+export const cardColor = 'rgb(255, 255, 255)'
+export const textColor = 'rgb(28, 28, 30)'
+export const borderColor = 'rgb(199, 199, 204)'
+export const notificationColor = 'rgb(255, 69, 58)'
