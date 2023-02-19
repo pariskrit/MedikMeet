@@ -13,7 +13,9 @@ module.exports = {
           '@screens/*': './src/screens',
           '@assets/*': './src/assets',
           '@services/*': './src/services',
-          '@interfaces/*': './src/interfaces',
+          "@interfaces/*": ["src/ts/interfaces/*"],
+          "@utils/*": ["src/utils/*"],
+          "@types/*": ["src/ts/types*"]
         },
       },
     ],

@@ -7,7 +7,7 @@ import {
   textColor,
   notificationColor,
   secondaryColor,
-} from './colors'
+} from '../styles/colors'
 
 export const MyTheme = {
   ...DefaultTheme,

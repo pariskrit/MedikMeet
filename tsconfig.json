@@ -12,7 +12,8 @@
       "@assets/*": ["src/assets/*"],
       "@services/*": ["src/services/*"],
       "@interfaces/*": ["src/interfaces/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@types/*": ["src/ts/types*"]
     }
   },
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],

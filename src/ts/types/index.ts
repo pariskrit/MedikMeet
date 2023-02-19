@@ -12,3 +12,7 @@ export type HomeScreenNavigationProp = NativeStackNavigationProp<
   HomeStackNavigatorParamList,
   'Details'
 >;
+
+export type genericObj = {
+  [key: string]: any
+}

@@ -15,4 +15,19 @@ export const flexStyles = StyleSheet.create({
   flex_1: {
     flex: 1,
   },
+  justifyCenter: {
+    justifyContent: 'center',
+  },
+  justifyBetween: {
+    justifyContent: 'space-between',
+  },
+  justifyEnd: {
+    justifyContent: 'flex-end',
+  },
+  flexDirectionRow: {
+    flexDirection: 'row',
+  },
+  flexDirectionCol: {
+    flexDirection: 'column',
+  },
 })

@@ -2,20 +2,20 @@ import { NavigationContainer, DarkTheme } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useColorScheme } from 'react-native'
-import Home from 'screens/Home'
-import Login from 'screens/Login'
-import Otp from 'screens/Otp'
-import SignUp from 'screens/SignUp'
-import Welcome from 'screens/Welcome'
+import Home from 'screens/Authentication/Home'
+import Login from 'screens/Authentication/Login'
+import Otp from 'screens/Authentication/Otp'
+import SignUp from 'screens/Authentication/SignUp'
+import Welcome from 'screens/Authentication/Welcome'
 import { MyTheme } from 'utils/theme'
 
 const Stack = createNativeStackNavigator()
-
+// do not use default Text component directly use MyText component instead
 const Navigation = () => {
   const scheme = useColorScheme()
   return (
     <NavigationContainer theme={scheme === 'dark' ? DarkTheme : MyTheme}>
-      <Stack.Navigator initialRouteName='Welcome'>
+      <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen
           name="Home"
