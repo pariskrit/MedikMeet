@@ -68,10 +68,11 @@ function SignUp(props: any) {
       ...formState,
       [name]: val,
     })
-    if (isSubmitted) {
-      const formErrors: typeof errors = await InputValidator({ [name]: val })
-      setErrors(formErrors)
-    }
+    const formErrors: genericObj = await InputValidator({ [name]: val })
+    setErrors({
+      ...errors,
+      [name]: formErrors[name],
+    })
   }
   const { email, phone, firstName, lastName, termsAndConditions } = formState
   return (

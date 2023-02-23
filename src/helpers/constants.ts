@@ -1,3 +1,4 @@
+import { dropdownItems } from './../ts/types/index'
 export const BASE_URL = ''
 
 type fontFamilyOptions = {
@@ -11,3 +12,9 @@ export const fontFamilyType: fontFamilyOptions = {
 }
 
 export const maxOTPCodeLength = 4
+
+export const genderOptions: dropdownItems[] = [
+  { label: 'Male', value: 'male' },
+  { label: 'Female', value: 'female' },
+  { label: 'Other', value: 'other' },
+]

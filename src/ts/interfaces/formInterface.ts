@@ -1,10 +1,11 @@
-import { KeyboardTypeOptions } from 'react-native'
+import { KeyboardTypeOptions, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native'
 import { ReactElement } from 'react'
+import { dropdownItems } from 'ts/types'
 
 export interface basicInputInterface {
   name?: string
   value?: any
-  onChange?: Function
+  onChange?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void) | undefined
   onChangeText?: Function & ((value: string) => void)
   onPress?: Function & (() => void)
   label?: string
@@ -13,9 +14,9 @@ export interface basicInputInterface {
   width?: string
   disabled?: boolean
   onKeyUp?: Function
-  onBlur?: Function
+  onBlur?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void) | undefined
   options?: any[]
-  error?: any
+  error?: string
   className?: string
   icon?: ReactElement
   styles?: Object
@@ -54,6 +55,10 @@ export interface checkRadioInterface extends basicInputInterface {
 export interface dateRangeInterface extends otherInputInterface {
   startDate?: any
   endDate?: any
+}
+export interface datepickerInterface extends otherInputInterface {
+  onDateChange?: (dateString: string) => void
+  datePickerOptions?: Object
 }
 
 export interface textEditorInterface extends basicInputInterface {
@@ -94,6 +99,12 @@ export interface chipsInputProps extends basicInputInterface {
   badgeColor?: string
   multiple?: boolean
 }
+export interface dropdownProps extends basicInputInterface {
+  items?: Array<dropdownItems>
+  setValue?: Function
+  setItems?: Function
+  prefixIcon?: React.ReactElement
+}
 export interface wholeFormInterface
   extends singleDocsInterface,
     checkRadioInterface,
@@ -103,6 +114,8 @@ export interface wholeFormInterface
     dateRangeInterface,
     checkdGroupProps,
     chipsInputProps,
+    dropdownProps,
+    datepickerInterface,
     ydmInputCommonInterface {
   formName:
     | 'textinput'
@@ -128,6 +141,7 @@ export interface wholeFormInterface
     | 'dragAndDropUpload'
     | 'datepicker'
     | 'checkbox'
+    | 'dropdown'
   alignment?: string
   validators?: any
   isNepali?: boolean

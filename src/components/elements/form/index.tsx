@@ -5,6 +5,8 @@ import { errorColor } from 'styles/colors'
 import { formElContainerPadding, infoFontSize, infoMarginTop } from 'styles/variables'
 import { wholeFormInterface } from 'ts/interfaces/formInterface'
 import CheckboxEl from './Checkbox'
+import DatePicker from './DatePicker'
+import Dropdown from './Dropdown'
 import TextInputEl from './TextInput'
 
 const defaultProps = {
@@ -20,6 +22,10 @@ const Form = (props: wholeFormInterface) => {
         return TextInputEl
       case 'checkbox':
         return CheckboxEl
+      case 'dropdown':
+        return Dropdown
+      case 'datepicker':
+        return DatePicker
 
       default:
         return null
@@ -37,7 +43,9 @@ const Form = (props: wholeFormInterface) => {
             <MyText>{label}</MyText>
           </View>
         )}
-      {DynamicComponent ? <DynamicComponent {...props} /> : 'Invalid form name'}
+      <View style={{ zIndex: 100 }}>
+        {DynamicComponent ? <DynamicComponent {...props} /> : <MyText>'Invalid form name'</MyText>}
+      </View>
       {error && (
         <View style={formStyles.errorContainer}>
           <MyText style={formStyles.error}>{error}</MyText>

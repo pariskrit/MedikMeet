@@ -1,7 +1,7 @@
 import { NavigationProp, StackActions, useTheme } from '@react-navigation/native'
 import Button from 'components/elements/Button'
 import Icon from 'components/elements/Icon'
-import OTPInput from 'components/elements/OTPInput'
+import OTPInput from 'components/elements/otpInput'
 import { maxOTPCodeLength } from 'helpers/constants'
 import * as React from 'react'
 import { Keyboard, Pressable, StyleSheet, View } from 'react-native'
@@ -63,6 +63,7 @@ function Otp(props: AppProps) {
               title="Verify"
               disabled={!isPinReady}
               loading={isLoading}
+              btnWidth={290}
             />
           </View>
         </Pressable>

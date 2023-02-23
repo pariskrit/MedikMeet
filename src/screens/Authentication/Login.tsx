@@ -119,25 +119,27 @@ function Login(props: AppProps) {
             </View>
           </View>
         )}
-        <View style={formStyles.formRow}>
-          <Button
-            hasIcon
-            icon={<Icon name="arrow-circle-right-fill" />}
-            onPress={() => login()}
-            loading={isLoading}
-            title="Login"
-          />
-        </View>
-        {!isLoggedIn && (
+        <View style={authStyles.btnContainer}>
           <View style={formStyles.formRow}>
             <Button
               hasIcon
               icon={<Icon name="arrow-circle-right-fill" />}
-              onPress={() => navigation.navigate('SignUp', { name: 'SignUp' })}
-              title="Sign Up"
+              onPress={() => login()}
+              loading={isLoading}
+              title="Login"
             />
           </View>
-        )}
+          {!isLoggedIn && (
+            <View style={formStyles.formRow}>
+              <Button
+                hasIcon
+                icon={<Icon name="arrow-circle-right-fill" />}
+                onPress={() => navigation.navigate('SignUp', { name: 'SignUp' })}
+                title="Sign Up"
+              />
+            </View>
+          )}
+        </View>
       </View>
     </SafeAreaView>
   )

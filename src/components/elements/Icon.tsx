@@ -6,17 +6,23 @@ import CheckFill from 'assets/svgs/check.svg'
 import User from 'assets/svgs/User.svg'
 import Phone from 'assets/svgs/Phone.svg'
 import GoBackArrow from 'assets/svgs/GoBackArrow.svg'
+import ArrowCircleWhiteRight from 'assets/svgs/ArrowCircleWhiteRight.svg'
+import EditPen from 'assets/svgs/EditRectangle.svg'
+import Logout from 'assets/svgs/Logout.svg'
+import Calendar from 'assets/svgs/Calendar.svg'
+import Gender from 'assets/svgs/Gender.svg'
 
 interface IIconProps {
   size?: number
   name: string
+  containerStyles?: Object
 }
 
 const defaultProps = {
   size: 20,
 }
 const Icon: React.FunctionComponent<IIconProps> = (props) => {
-  const { size, name } = props
+  const { size, name, containerStyles } = props
   const getIcon = () => {
     switch (name) {
       case 'message':
@@ -31,12 +37,26 @@ const Icon: React.FunctionComponent<IIconProps> = (props) => {
         return User
       case 'go-back':
         return GoBackArrow
+      case 'arrow-circle-right-white':
+        return ArrowCircleWhiteRight
+      case 'edit':
+        return EditPen
+      case 'logout':
+        return Logout
+      case 'calendar':
+        return Calendar
+      case 'gender':
+        return Gender
       default:
         return null
     }
   }
   let IconComp = getIcon()
-  return <View>{IconComp ? <IconComp width={size} height={size} /> : 'Invalid  name'}</View>
+  return (
+    <View style={containerStyles}>
+      {IconComp ? <IconComp width={size} height={size} /> : 'Invalid  name'}
+    </View>
+  )
 }
 Icon.defaultProps = defaultProps
 

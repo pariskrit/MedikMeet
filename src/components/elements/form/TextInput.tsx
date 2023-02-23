@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { KeyboardTypeOptions, StyleSheet, TextInput, View, Text } from 'react-native'
+import { KeyboardTypeOptions, StyleSheet, TextInput, TextInputProps, View } from 'react-native'
 import { borderColor, errorColor } from 'styles/colors'
-import { inputBorderRadius, inputHeight, inputPadding, inputWidth } from 'styles/variables'
 import { flexStyles } from 'styles/flex'
+import { inputBorderRadius, inputHeight, inputPadding, inputWidth } from 'styles/variables'
+import { isEmpty } from 'utils'
 
-
-type TextInputProps = {
+type TextInputElProps = {
   styles?: Object
   onChangeText?: Function
   value?: string
@@ -14,7 +14,7 @@ type TextInputProps = {
   hasIcon?: boolean
   iconToLeft: boolean
   icon?: React.ReactElement
-  error?: boolean
+  error?: string
 }
 const defaultProps = {
   onChangeText: (value: string) => {},
@@ -22,10 +22,10 @@ const defaultProps = {
   placeholder: '',
   keyboardType: 'default',
   iconToLeft: true,
-  error: false,
+  error: '',
   value: '',
 }
-function TextInputEl(props: TextInputProps & typeof defaultProps) {
+function TextInputEl(props: TextInputElProps & typeof defaultProps & TextInputProps) {
   const {
     styles,
     onChangeText,
@@ -42,12 +42,13 @@ function TextInputEl(props: TextInputProps & typeof defaultProps) {
       style={{
         ...inputStyles.inputContainer,
         ...(!iconToLeft && flexStyles.justifyBetween),
-        borderColor: error ? errorColor : borderColor,
+        borderColor: !isEmpty(error) ? errorColor : borderColor,
       }}
     >
       <>
         {hasIcon && iconToLeft ? <View style={inputStyles.iconContainer}>{icon}</View> : null}
         <TextInput
+          {...props}
           style={{ ...inputStyles.input, ...styles }}
           onChangeText={(text) => onChangeText(text)}
           value={value}
@@ -85,6 +86,7 @@ const inputStyles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
+    marginRight: 5,
   },
 })
 export default TextInputEl

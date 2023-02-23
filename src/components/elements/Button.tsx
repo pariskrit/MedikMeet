@@ -16,6 +16,9 @@ export interface ButtonProps {
   icon?: React.ReactElement
   loading?: boolean
   disabled?: boolean
+  iconToLeft?: boolean
+  btnTextBold?: boolean
+  fontSize?: number
 }
 const defaultProps = {
   color: primaryColor,
@@ -27,6 +30,9 @@ const defaultProps = {
   icon: null,
   loading: false,
   disabled: false,
+  iconToLeft: false,
+  btnTextBold: true,
+  fontSize: 16,
 }
 function ButtonEl(props: ButtonProps) {
   const {
@@ -41,6 +47,9 @@ function ButtonEl(props: ButtonProps) {
     loading,
     btnHeight,
     disabled,
+    iconToLeft,
+    btnTextBold,
+    fontSize,
   } = props
   return (
     <Pressable
@@ -55,10 +64,18 @@ function ButtonEl(props: ButtonProps) {
       onPress={() => onPress()}
       disabled={disabled || loading}
     >
-      <MyText style={{ ...btnStyles.text, color: btnTextColor }} fontStyle="bold">
+      {hasIcon && iconToLeft && !loading ? (
+        <View style={btnStyles.iconContainer}>{icon}</View>
+      ) : null}
+      <MyText
+        style={{ ...btnStyles.text, color: btnTextColor, fontSize: fontSize }}
+        fontStyle={btnTextBold ? 'bold' : 'regular'}
+      >
         {title}
       </MyText>
-      {hasIcon && !loading ? <View style={btnStyles.iconContainer}>{icon}</View> : null}
+      {hasIcon && !iconToLeft && !loading ? (
+        <View style={btnStyles.iconContainer}>{icon}</View>
+      ) : null}
       {loading && <ActivityIndicator size="small" color="#fff" />}
     </Pressable>
   )
@@ -70,9 +87,12 @@ const btnStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: btnBorderRadius,
-    elevation: 3,
+    elevation: 35,
     display: 'flex',
     flexDirection: 'row',
+    shadowOffset: { width: 0, height: 10, },
+    shadowColor: '#6f7ec940',
+    shadowOpacity: 1,
   },
   text: {
     fontSize: defaultFontSize,

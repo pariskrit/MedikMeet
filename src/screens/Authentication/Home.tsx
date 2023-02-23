@@ -1,12 +1,19 @@
+import { NavigationProp } from '@react-navigation/native'
 import * as React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 
-export interface AppProps {}
+export interface AppProps {
+  navigation: NavigationProp<any, any>
+}
 
 function Home(props: AppProps) {
+  const { navigation } = props
   return (
     <View>
       <Text>Home Page</Text>
+      <Pressable onPress={() => navigation.navigate('Profile', { name: 'Profile' })}>
+        <Text>Profile</Text>
+      </Pressable>
     </View>
   )
 }

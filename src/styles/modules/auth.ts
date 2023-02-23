@@ -23,4 +23,7 @@ export const authStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  btnContainer: {
+    marginTop: 40,
+  },
 })

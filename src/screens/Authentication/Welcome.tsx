@@ -34,7 +34,7 @@ function Welcome(props: AppProps) {
       <MyText style={{ ...styles.label, color: colors.primary }}>Welcome</MyText>
       <MyText style={{ ...styles.label, color: colors.primary }}>To</MyText>
       <MyText style={{ ...styles.label, color: colors.primary }}>SoftManage</MyText>
-      <Image style={styles.logo} source={require('assets/SM-Logo.png')} />
+      <Image style={styles.logo} source={require('assets/images/SM-Logo.png')} />
     </View>
   )
 }
