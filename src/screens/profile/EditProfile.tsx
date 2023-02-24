@@ -113,7 +113,7 @@ const EditProfile: React.FunctionComponent<IEditProfileProps> = (props) => {
           <View>
             <FormGroup
               formName="datepicker"
-              placeholder="DOB      MM/DD/YYYY"
+              placeholder="DOB      YYYY/MM/DD/"
               value={dob}
               error={errors.dob}
               onDateChange={(value: any) => onChange('dob', value)}

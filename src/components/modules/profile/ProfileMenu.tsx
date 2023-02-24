@@ -1,7 +1,7 @@
 import Icon from 'components/elements/Icon'
 import MyText from 'components/elements/MyText'
 import * as React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Pressable } from 'react-native'
 import { flexStyles } from 'styles/flex'
 import { isEmpty } from 'utils'
 
@@ -13,34 +13,53 @@ interface IProfileMenuProps {
   hasMenuRightIcon?: boolean
   menuContainerStyle?: Object
   menuTitleStyle?: Object | {}
+  onMenuClick?: Function
+  disabled?: boolean
 }
 const defaultProps = {
-  menuRightIcon: <Icon name="arrow-circle-right-white" size={30}/>,
+  menuRightIcon: <Icon name="arrow-circle-right-white" size={30} />,
   menuTitleIcon: <></>,
   menuRightText: '',
   hasMenuRightIcon: true,
   menuContainerStyle: {},
   menuTitleStyle: {},
+  onMenuClick: () => {},
+  disabled: false,
 }
 const ProfileMenu: React.FunctionComponent<IProfileMenuProps> = (props) => {
-  const { menuTitle, menuRightText, menuTitleIcon, menuContainerStyle, menuTitleStyle } = props
+  const {
+    menuTitle,
+    menuRightText,
+    menuTitleIcon,
+    menuContainerStyle,
+    menuTitleStyle,
+    onMenuClick,
+    disabled,
+  } = props
   return (
-    <View
-      style={{
-        ...flexStyles.flex,
-        ...profileMenuStyles.menuContainer,
-        ...menuContainerStyle,
+    <Pressable
+      onPress={() => {
+        if (onMenuClick) onMenuClick()
       }}
+      disabled={disabled}
     >
-      <View style={{ ...profileMenuStyles.titleContainer, ...(menuTitleStyle || []) }}>
-        <MyText>{menuTitle}</MyText>
-        {!isEmpty(menuTitleIcon) && menuTitleIcon}
+      <View
+        style={{
+          ...flexStyles.flex,
+          ...profileMenuStyles.menuContainer,
+          ...menuContainerStyle,
+        }}
+      >
+        <View style={{ ...profileMenuStyles.titleContainer, ...(menuTitleStyle || []) }}>
+          <MyText>{menuTitle}</MyText>
+          {!isEmpty(menuTitleIcon) && menuTitleIcon}
+        </View>
+        <View>
+          <MenuRightIcon {...props} />
+          {!isEmpty(menuRightText) && <MyText>{menuRightText || ''}</MyText>}
+        </View>
       </View>
-      <View>
-        <MenuRightIcon {...props} />
-        {!isEmpty(menuRightText) && <MyText>{menuRightText || ''}</MyText>}
-      </View>
-    </View>
+    </Pressable>
   )
 }
 

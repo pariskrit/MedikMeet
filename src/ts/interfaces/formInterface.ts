@@ -21,6 +21,8 @@ export interface basicInputInterface {
   icon?: ReactElement
   styles?: Object
   paddingHorizontal?: number
+  info?: string
+  infoColor?: string
 }
 
 export interface otherInputInterface extends basicInputInterface {

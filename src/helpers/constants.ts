@@ -1,4 +1,4 @@
-import { dropdownItems } from './../ts/types/index'
+import { dropdownItems, profileMenuItem } from './../ts/types/index'
 export const BASE_URL = ''
 
 type fontFamilyOptions = {
@@ -18,3 +18,4 @@ export const genderOptions: dropdownItems[] = [
   { label: 'Female', value: 'female' },
   { label: 'Other', value: 'other' },
 ]
+

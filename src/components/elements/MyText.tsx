@@ -4,7 +4,6 @@ import { StyleSheet, Text } from 'react-native'
 
 interface IMyTextProps {
   children: string
-  fontSize?: number
   style?: Object
   fontStyle?: string
 }

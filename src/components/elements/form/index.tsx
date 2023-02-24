@@ -1,7 +1,7 @@
 import MyText from 'components/elements/MyText'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { errorColor } from 'styles/colors'
+import { errorColor, textColor } from 'styles/colors'
 import { formElContainerPadding, infoFontSize, infoMarginTop } from 'styles/variables'
 import { wholeFormInterface } from 'ts/interfaces/formInterface'
 import CheckboxEl from './Checkbox'
@@ -14,7 +14,7 @@ const defaultProps = {
   paddingHorizontal: 0,
 }
 const Form = (props: wholeFormInterface) => {
-  const { formName, name, label, size, width, error, paddingHorizontal } = props
+  const { formName, name, label, size, width, error, paddingHorizontal, info, infoColor } = props
   // please add new form type here for the new component
   const getDynamicComponent = () => {
     switch (formName) {
@@ -51,6 +51,11 @@ const Form = (props: wholeFormInterface) => {
           <MyText style={formStyles.error}>{error}</MyText>
         </View>
       )}
+      {info && (
+        <View style={formStyles.infoContainer}>
+          <MyText style={{ ...formStyles.info, color: infoColor }} >{info}</MyText>
+        </View>
+      )}
     </View>
   )
 }
@@ -67,6 +72,8 @@ const formStyles = StyleSheet.create({
   errorContainer: {
     marginTop: infoMarginTop,
   },
+  infoContainer: { marginTop: infoMarginTop },
+  info: { color: textColor, fontSize: infoFontSize },
 })
 
 export default Form

@@ -1,8 +1,5 @@
-import { NavigationContainer, DarkTheme } from '@react-navigation/native'
+import { DarkTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import HeaderBackButton from 'components/elements/HeaderBackButton'
-import Icon from 'components/elements/Icon'
-import { fontFamilyType } from 'helpers/constants'
 import * as React from 'react'
 import { useColorScheme } from 'react-native'
 import Home from 'screens/authentication/Home'
@@ -12,7 +9,9 @@ import SignUp from 'screens/authentication/SignUp'
 import Welcome from 'screens/authentication/Welcome'
 import Profile from 'screens/profile'
 import EditProfile from 'screens/profile/EditProfile'
+import VerifyUser from 'screens/profile/VerifyUser'
 import { MyTheme } from 'utils/theme'
+import { getCommonHeaderOptions } from './navigationHelpers'
 
 const Stack = createNativeStackNavigator()
 // do not use default Text component directly use MyText component instead
@@ -51,15 +50,15 @@ const Navigation = () => {
           component={EditProfile}
           options={({ navigation, route }) => ({
             title: 'Edit Profile',
-            headerShadowVisible: false,
-            headerStyle: {
-              backgroundColor: 'transparent',
-            },
-            headerTitleStyle: {
-              color: 'black',
-              fontFamily: fontFamilyType['bold'],
-            },
-            headerLeft: (props) => <HeaderBackButton {...props} navigation={navigation} />,
+            ...getCommonHeaderOptions(navigation),
+          })}
+        />
+        <Stack.Screen
+          name="VerifyUser"
+          component={VerifyUser}
+          options={({ navigation, route }) => ({
+            title: `Verify User`,
+            ...getCommonHeaderOptions(navigation),
           })}
         />
       </Stack.Navigator>

@@ -22,3 +22,13 @@ export type dropdownItems = {
   value: string
   icon?: any
 }
+
+export type profileMenuItem = {
+  id: number
+  title: string
+  hasMenuRightIcon?: boolean
+  menuRightIcon?: React.ReactElement
+  menuRightText?: string
+  onMenuClick?: Function
+  disabled?: boolean
+}
