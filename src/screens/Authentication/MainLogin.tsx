@@ -1,24 +1,21 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationProp, StackActions } from '@react-navigation/native'
-import Button from 'components/elements/Button'
-import FormGroup from 'components/elements/form'
-import Icon from 'components/elements/Icon'
-import MyText from 'components/elements/MyText'
 import { InputValidator } from 'helpers/inputValidators'
 import * as React from 'react'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { formStyles } from 'styles/form'
 import { authStyles } from 'styles/modules/auth'
 import { genericObj } from 'ts/types'
 import { isEmpty } from 'utils'
 import { ENABLED_APP_LOCK, LOGGED_IN, PIN_KEY } from 'helpers/sharedPrefKeys'
+import { Button } from 'react-native-paper'
 
 export interface AppProps {
   navigation: NavigationProp<any, any>
 }
 
-function Login(props: AppProps) {
+function MainLogin(props: AppProps) {
   const [text, setText] = React.useState('')
   const [error, setError] = React.useState('')
   const [inValidPIN, setInvalidPIN] = React.useState(false)
@@ -80,69 +77,21 @@ function Login(props: AppProps) {
   return (
     <SafeAreaView>
       <View style={authStyles.authContainer}>
-        <View style={formStyles.formRow}>
-          {!isLoggedIn && <MyText style={authStyles.formHeader}>Login</MyText>}
-          {isLoggedIn && appLockEnabled && (
-            <MyText style={authStyles.formHeader}>Unlock App</MyText>
-          )}
-          {!isLoggedIn && (
-            <FormGroup
-              formName="textinput"
-              onChangeText={(value: any) => setUser(value)}
-              error={error}
-              value={text}
-              hasIcon
-              icon={<Icon name="message" />}
-              placeholder="User Id"
-            />
-          )}
+        <View>
+          <Text>Log in or sign up in seconds</Text>
         </View>
-        {appLockEnabled && (
-          <View style={formStyles.formRow}>
-            {!isLoggedIn && (
-              <MyText style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16 }}>Or</MyText>
-            )}
-            <View style={formStyles.formRow}>
-              <FormGroup
-                formName="textinput"
-                keyboardType="numeric"
-                value={pin}
-                onChangeText={(value: any) => {
-                  setPIN(value)
-                  setInvalidPIN(false)
-                }}
-                hasIcon
-                icon={<Icon name="message" />}
-                placeholder="PIN"
-                error={inValidPIN ? 'Incorrect PIN' : ''}
-              />
-            </View>
-          </View>
-        )}
-        <View style={authStyles.btnContainer}>
-          <View style={formStyles.formRow}>
-            <Button
-              hasIcon
-              icon={<Icon name="arrow-circle-right-fill" />}
-              onPress={() => login()}
-              loading={isLoading}
-              title="Login"
-            />
-          </View>
-          {!isLoggedIn && (
-            <View style={formStyles.formRow}>
-              <Button
-                hasIcon
-                icon={<Icon name="arrow-circle-right-fill" />}
-                onPress={() => navigation.navigate('SignUp', { name: 'SignUp' })}
-                title="Sign Up"
-              />
-            </View>
-          )}
-        </View>
+        <Button mode="contained" onPress={() => navigation.navigate('LoginWithEmail')}>
+          CONTINUE WITH EMAIL
+        </Button>
+        <Button mode="contained" onPress={() => console.log('Pressed')}>
+          CONTINUE WITH GOOGLE
+        </Button>
+        <Button mode="contained" onPress={() => console.log('Pressed')}>
+          CONTINUE WITH MOBILE
+        </Button>
       </View>
     </SafeAreaView>
   )
 }
 
-export default Login
+export default MainLogin
