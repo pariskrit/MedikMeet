@@ -38,6 +38,7 @@ export interface otherInputInterface extends basicInputInterface {
   keyboardType?: KeyboardTypeOptions
   borderColor?: string
   height?: number
+  placeholderTextColor?: string
 }
 
 export interface otherTimePickerInterface extends basicInputInterface {

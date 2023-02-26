@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Icon from 'components/elements/Icon'
 import MyText from 'components/elements/MyText'
-import { borderColor, buttonColor, primaryColor } from 'styles/colors'
+import { borderColor, buttonColor, cardColor, primaryColor, textColor } from 'styles/colors'
 import FormGroup from 'components/elements/form'
 import { InputValidator } from 'helpers/inputValidators'
 import { genericObj } from 'ts/types'
@@ -57,7 +57,7 @@ const LoginWithEmail = (props: AppProps) => {
   const { navigation } = props
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: cardColor, flex: 1 }}>
       <Pressable onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
           <View style={styles.header}>
@@ -69,7 +69,9 @@ const LoginWithEmail = (props: AppProps) => {
             </View>
           </View>
           <View>
-            <MyText>We'll check if you have an account, and help crrate one if you don't.</MyText>
+            <MyText style={{ color: textColor }}>
+              We'll check if you have an account, and help crrate one if you don't.
+            </MyText>
           </View>
 
           <View>
@@ -82,7 +84,8 @@ const LoginWithEmail = (props: AppProps) => {
                 error={errors.email}
                 value={email}
                 placeholder="Email"
-                styles={{ padding: 0, paddingLeft: 3 }}
+                styles={{ padding: 0, paddingLeft: 3, width: '100%', color: textColor }}
+                placeholderTextColor={textColor}
                 height={40}
                 borderColor={focus ? primaryColor : borderColor}
               />
@@ -103,13 +106,15 @@ const LoginWithEmail = (props: AppProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 30,
+    paddingHorizontal: 30,
+    paddingVertical: 100,
     backgroundColor: '#fff',
   },
   header: {
     display: 'flex',
     flexDirection: 'row',
     alignContent: 'center',
+    justifyContent: 'flex-start',
   },
   headerText: {
     color: primaryColor,
