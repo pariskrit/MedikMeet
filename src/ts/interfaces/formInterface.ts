@@ -1,3 +1,4 @@
+import { borderColor } from 'styles/colors'
 import { KeyboardTypeOptions, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native'
 import { ReactElement } from 'react'
 import { dropdownItems } from 'ts/types'
@@ -15,6 +16,7 @@ export interface basicInputInterface {
   disabled?: boolean
   onKeyUp?: Function
   onBlur?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void) | undefined
+  onFocus?: ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void) | undefined
   options?: any[]
   error?: string
   className?: string
@@ -34,6 +36,8 @@ export interface otherInputInterface extends basicInputInterface {
   hasIcon?: boolean
   iconToLeft?: boolean
   keyboardType?: KeyboardTypeOptions
+  borderColor?: string
+  height?: number
 }
 
 export interface otherTimePickerInterface extends basicInputInterface {

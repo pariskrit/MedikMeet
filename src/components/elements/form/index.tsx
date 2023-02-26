@@ -53,7 +53,7 @@ const Form = (props: wholeFormInterface) => {
       )}
       {info && (
         <View style={formStyles.infoContainer}>
-          <MyText style={{ ...formStyles.info, color: infoColor }} >{info}</MyText>
+          <MyText style={{ ...formStyles.info, color: infoColor }}>{info}</MyText>
         </View>
       )}
     </View>

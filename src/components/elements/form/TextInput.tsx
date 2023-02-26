@@ -15,15 +15,23 @@ type TextInputElProps = {
   iconToLeft: boolean
   icon?: React.ReactElement
   error?: string
+  onFocus?: Function
+  onBlur?: Function
+  borderColor?: string
+  height?: number
 }
 const defaultProps = {
   onChangeText: (value: string) => {},
+  onFocus: () => {},
+  onBlur: () => {},
   styles: {},
   placeholder: '',
   keyboardType: 'default',
   iconToLeft: true,
   error: '',
   value: '',
+  height: inputHeight,
+  borderColor: borderColor,
 }
 function TextInputEl(props: TextInputElProps & typeof defaultProps & TextInputProps) {
   const {
@@ -36,6 +44,8 @@ function TextInputEl(props: TextInputElProps & typeof defaultProps & TextInputPr
     iconToLeft,
     icon,
     error,
+    borderColor,
+    height,
   } = props
   return (
     <View
@@ -43,6 +53,7 @@ function TextInputEl(props: TextInputElProps & typeof defaultProps & TextInputPr
         ...inputStyles.inputContainer,
         ...(!iconToLeft && flexStyles.justifyBetween),
         borderColor: !isEmpty(error) ? errorColor : borderColor,
+        height: height,
       }}
     >
       <>
