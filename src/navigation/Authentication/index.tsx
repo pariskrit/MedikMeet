@@ -13,36 +13,23 @@ const Stack = createNativeStackNavigator()
 const Authentication = () => {
   const scheme = useColorScheme()
   return (
-      <Stack.Navigator initialRouteName="Login">
-       
-        <Stack.Screen
-          name="MainLogin"
-          component={MainLogin}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="LoginWithEmail"
-          component={LoginWithEmail}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="LoginWithGoogle"
-          component={MainLogin}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="LoginWithMobile"
-          component={MainLogin}
-          options={{ headerShown: false }}
-        />
-        {/* <Stack.Screen
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen name="MainLogin" component={MainLogin} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="LoginWithEmail"
+        component={LoginWithEmail}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="LoginPassword" component={MainLogin} options={{ headerShown: false }} />
+      <Stack.Screen name="LoginWithGoogle" component={MainLogin} options={{ headerShown: false }} />
+      <Stack.Screen name="LoginWithMobile" component={MainLogin} options={{ headerShown: false }} />
+      {/* <Stack.Screen
           name="SignUp"
           component={SignUp}
           options={{ title: 'SignUp', headerShown: false }}
         />
         <Stack.Screen name="Otp" component={Otp} options={{ title: 'Otp', headerShown: false }} /> */}
-
-      </Stack.Navigator>
+    </Stack.Navigator>
   )
 }
 

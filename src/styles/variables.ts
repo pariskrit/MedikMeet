@@ -1,4 +1,4 @@
-export const inputBorderRadius = 7
+export const inputBorderRadius = 25
 export const inputHeight = 50
 export const inputWidth = '100%'
 export const inputPadding = 10
