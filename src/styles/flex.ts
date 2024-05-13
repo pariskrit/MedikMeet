@@ -2,9 +2,9 @@ import { StyleSheet } from 'react-native'
 
 export const flexStyles = StyleSheet.create({
   flex: {
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   flex_column: {
     display: 'flex',

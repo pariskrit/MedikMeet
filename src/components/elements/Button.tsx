@@ -1,28 +1,30 @@
 import * as React from 'react'
-import { View, StyleSheet, Pressable, ActivityIndicator } from 'react-native'
-import { primaryColor } from 'styles/colors'
-import { btnBorderRadius, btnWidth, btnHeight, defaultFontSize } from 'styles/variables'
-import MyText from 'components/elements/MyText'
+import { GestureResponderEvent } from 'react-native'
+import { buttonColor } from 'styles/colors'
+import { btnWidth, btnHeight } from 'styles/variables'
+import { Button } from 'react-native-paper'
+import { IconSource } from 'react-native-paper/lib/typescript/components/Icon'
 
 export interface ButtonProps {
-  title: string
-  onPress: Function
-  color?: string
-  styles?: Object
+  onPress: (e: GestureResponderEvent) => void
+  buttonColor?: string
+  style?: Object
   btnTextColor?: string
   btnWidth?: number
   btnHeight?: number
   hasIcon?: boolean
-  icon?: React.ReactElement
+  icon?: IconSource
   loading?: boolean
   disabled?: boolean
   iconToLeft?: boolean
   btnTextBold?: boolean
   fontSize?: number
+  children: string
+  paddingHorizontal?: number
 }
 const defaultProps = {
-  color: primaryColor,
-  styles: {},
+  buttonColor: buttonColor,
+  style: { borderRadius: 200 },
   btnTextColor: 'white',
   btnWidth: btnWidth,
   btnHeight: btnHeight,
@@ -33,14 +35,15 @@ const defaultProps = {
   iconToLeft: false,
   btnTextBold: true,
   fontSize: 16,
+  children: null,
+  paddingHorizontal: 55,
 }
 function ButtonEl(props: ButtonProps) {
   const {
-    title,
-    color,
-    styles,
+    buttonColor,
+    style,
     onPress,
-    btnTextColor,
+    btnTextColor = 'white',
     btnWidth,
     hasIcon,
     icon,
@@ -50,58 +53,29 @@ function ButtonEl(props: ButtonProps) {
     iconToLeft,
     btnTextBold,
     fontSize,
+    children,
+    paddingHorizontal,
   } = props
   return (
-    <Pressable
-      style={{
-        ...btnStyles.button,
-        ...styles,
-        backgroundColor: color,
-        width: btnWidth,
+    <Button
+      icon={icon}
+      buttonColor={buttonColor}
+      mode="contained"
+      onPress={onPress}
+      uppercase
+      style={style}
+      theme={{ roundness: 20 }}
+      contentStyle={{
+        justifyContent: icon ? 'space-between' : 'center',
+        paddingHorizontal: paddingHorizontal,
         height: btnHeight,
-        opacity: disabled ? 0.7 : 1,
       }}
-      onPress={() => onPress()}
-      disabled={disabled || loading}
+      textColor={btnTextColor}
     >
-      {hasIcon && iconToLeft && !loading ? (
-        <View style={btnStyles.iconContainer}>{icon}</View>
-      ) : null}
-      <MyText
-        style={{ ...btnStyles.text, color: btnTextColor, fontSize: fontSize }}
-        fontStyle={btnTextBold ? 'bold' : 'regular'}
-      >
-        {title}
-      </MyText>
-      {hasIcon && !iconToLeft && !loading ? (
-        <View style={btnStyles.iconContainer}>{icon}</View>
-      ) : null}
-      {loading && <ActivityIndicator size="small" color="#fff" />}
-    </Pressable>
+      {children}
+    </Button>
   )
 }
-const btnStyles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: btnBorderRadius,
-    elevation: 35,
-    display: 'flex',
-    flexDirection: 'row',
-    shadowOffset: { width: 0, height: 10, },
-    shadowColor: '#6f7ec940',
-    shadowOpacity: 1,
-  },
-  text: {
-    fontSize: defaultFontSize,
-    lineHeight: 21,
-    letterSpacing: 0.25,
-    textAlign: 'center',
-    flex: 1,
-  },
-  iconContainer: {},
-})
+
 ButtonEl.defaultProps = defaultProps
 export default ButtonEl

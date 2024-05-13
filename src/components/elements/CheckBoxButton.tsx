@@ -14,15 +14,17 @@ interface IProps {
   onPress?: Function
   size?: number
   backgroundColor?: string
+  borderColor?: string
 }
 
 const defaultProps = {
   onPress: () => {},
   checked: false,
   size: checkboxSize,
+  borderColor: borderColor,
 }
 export const CheckBoxButton = (props: IProps & typeof defaultProps) => {
-  const { checked, onPress, size, backgroundColor } = props
+  const { checked, onPress, size, backgroundColor, borderColor } = props
 
   return (
     <TouchableOpacity
@@ -34,7 +36,7 @@ export const CheckBoxButton = (props: IProps & typeof defaultProps) => {
           width: size || checkboxSize,
           backgroundColor: checked ? backgroundColor : 'transparent',
           borderColor: borderColor,
-          borderWidth:2
+          borderWidth: 2,
         },
       ]}
       onPress={onPress}

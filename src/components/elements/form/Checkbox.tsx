@@ -7,12 +7,14 @@ import { isEmpty } from 'utils'
 import MyText from 'components/elements/MyText'
 
 import { CheckBoxButton } from '../CheckBoxButton'
+import { borderColor } from 'styles/colors'
 interface ICheckboxProps {
   checked?: boolean
   onPress?: Function & (() => void)
   label?: string
   styles?: Object
   size?: number
+  borderColor?: string
 }
 const defaultProps = {
   onPress: () => {},
@@ -20,9 +22,10 @@ const defaultProps = {
   label: '',
   styles: {},
   checked: false,
+  borderColor: borderColor,
 }
 const CheckboxEl: React.FunctionComponent<ICheckboxProps> = (props) => {
-  const { checked, onPress, label, styles, size } = props
+  const { checked, onPress, label, styles, size, borderColor } = props
   return (
     <View
       style={{
@@ -32,7 +35,7 @@ const CheckboxEl: React.FunctionComponent<ICheckboxProps> = (props) => {
         justifyContent: 'flex-start',
       }}
     >
-      <CheckBoxButton checked={checked} onPress={onPress} size={size} />
+      <CheckBoxButton checked={checked} onPress={onPress} size={size} borderColor={borderColor} />
       {!isEmpty(label) && (
         <MyText style={{ ...commonStyles.link, ...checkboxStyles.label }}>{label || ''}</MyText>
       )}

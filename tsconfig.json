@@ -3,6 +3,7 @@
   "compilerOptions": {
     "target": "es6",
     "baseUrl": ".",
+    "types": ["node"],
     "paths": {
       "*": ["src/*"],
       "tests": ["tests/*"],
@@ -13,7 +14,8 @@
       "@services/*": ["src/services/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@utils/*": ["src/utils/*"],
-      "@types/*": ["src/ts/types*"]
+      "@types/*": ["src/ts/types*"],
+      "@redux/*": ["src/redux*"]
     }
   },
   "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],

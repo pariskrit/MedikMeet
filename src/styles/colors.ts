@@ -7,3 +7,8 @@ export const borderColor = '#E4DFDF'
 export const notificationColor = 'rgb(255, 69, 58)'
 export const errorColor = '#bf2358'
 export const buttonColor = '#2F345A'
+export const disabledColor = 'rgba(0,0,0,0.38)'
+
+export const headerColor = '#4CC2CB'
+export const defaultIconColor = '#ACADAE'
+export const defaultIconFillColor = '#807A7A'

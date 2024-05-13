@@ -1,18 +1,20 @@
 import { NavigationProp } from '@react-navigation/native'
-import { Button } from 'react-native-paper'
-import { View, Text, StyleSheet, Pressable, Keyboard } from 'react-native'
+import { View, StyleSheet, Pressable, Keyboard } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Icon from 'components/elements/Icon'
-import MyText from 'components/elements/MyText'
-import { borderColor, buttonColor, primaryColor } from 'styles/colors'
+import { borderColor, cardColor, errorColor, primaryColor, textColor } from 'styles/colors'
 import FormGroup from 'components/elements/form'
 import { InputValidator } from 'helpers/inputValidators'
 import { genericObj } from 'ts/types'
+import AuthHeader from 'components/modules/AuthHeader'
 import { isEmpty } from 'utils'
+import { commonStyles } from 'styles/common'
+import ButtonEl from 'components/elements/Button'
+import { validateUser } from 'services/users/userAuth'
+import Loading from 'components/elements/ActivityIndicator'
 
 export interface AppProps {
-  navigation: NavigationProp<any, any>
+  navigation?: NavigationProp<any, any>
 }
 
 const LoginWithEmail = (props: AppProps) => {
@@ -23,6 +25,7 @@ const LoginWithEmail = (props: AppProps) => {
     email: '',
   })
   const [focus, setFocus] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const onChange = async (name: string, val: string | boolean) => {
     setFormState({
@@ -38,10 +41,25 @@ const LoginWithEmail = (props: AppProps) => {
 
   const checkEmailValidation = async () => {
     if (await validateForm(email)) {
-      setTimeout(() => {
-        navigation.navigate('MainLogin', { email: email })
-      }, 1500)
-    } else {
+      setLoading(true)
+      try {
+        // validate if email exists in the system
+        const response = await validateUser({ email })
+
+        if (response?.status) {
+          if (response?.data?.data?.availability) {
+            // navigate to sign up screen  (email is not available)
+            navigation?.navigate('Signup', { email: email })
+          } else {
+            // navigate to login screen
+            navigation?.navigate('LoginWithPassword', { email: email })
+          }
+        }
+      } catch (error) {
+        console.log('error', error)
+      } finally {
+        setLoading(false)
+      }
     }
   }
   const validateForm = async (e: any) => {
@@ -57,23 +75,21 @@ const LoginWithEmail = (props: AppProps) => {
   const { navigation } = props
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: cardColor, flex: 1 }}>
+      <Loading show={loading} />
       <Pressable onPress={() => Keyboard.dismiss()}>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <View onTouchEnd={() => navigation.goBack()}>
-              <Icon name="go-back" size={55} />
-            </View>
-            <View>
-              <MyText style={styles.headerText}>Continue with Email</MyText>
-            </View>
-          </View>
-          <View>
-            <MyText>We'll check if you have an account, and help crrate one if you don't.</MyText>
-          </View>
-
-          <View>
-            <View>
+        <View style={commonStyles.centerAuthForms}>
+          <AuthHeader
+            title="Continue with Email"
+            subtitle={"We'll check if you have an account, and help create one if you don't."}
+            goBack={() => navigation?.goBack()}
+          />
+          <View style={styles.form}>
+            <View
+              style={{
+                marginBottom: 10,
+              }}
+            >
               <FormGroup
                 formName="textinput"
                 onFocus={() => setFocus(true)}
@@ -82,18 +98,19 @@ const LoginWithEmail = (props: AppProps) => {
                 error={errors.email}
                 value={email}
                 placeholder="Email"
-                styles={{ padding: 0, paddingLeft: 3 }}
+                label="Email"
+                styles={{
+                  padding: 0,
+                  paddingLeft: 3,
+                  width: '100%',
+                  color: textColor,
+                }}
+                placeholderTextColor={errors.email ? errorColor : textColor}
                 height={40}
                 borderColor={focus ? primaryColor : borderColor}
               />
             </View>
-            <Button
-              mode="contained"
-              onPress={checkEmailValidation}
-              style={{ backgroundColor: buttonColor }}
-            >
-              CONTINUE
-            </Button>
+            <ButtonEl onPress={checkEmailValidation}>CONTINUE</ButtonEl>
           </View>
         </View>
       </Pressable>
@@ -103,19 +120,12 @@ const LoginWithEmail = (props: AppProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 30,
+    paddingHorizontal: 40,
+    paddingVertical: 100,
     backgroundColor: '#fff',
   },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignContent: 'center',
-  },
-  headerText: {
-    color: primaryColor,
-    fontSize: 20,
-    fontWeight: '600',
-    marginTop: 5,
+  form: {
+    marginTop: 10,
   },
 })
 

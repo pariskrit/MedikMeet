@@ -1,94 +1,83 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { NavigationProp, StackActions } from '@react-navigation/native'
-import { InputValidator } from 'helpers/inputValidators'
+import { NavigationProp } from '@react-navigation/native'
 import * as React from 'react'
 import { Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { formStyles } from 'styles/form'
-import { authStyles } from 'styles/modules/auth'
-import { genericObj } from 'ts/types'
-import { isEmpty } from 'utils'
-import { ENABLED_APP_LOCK, LOGGED_IN, PIN_KEY } from 'helpers/sharedPrefKeys'
-import { Button } from 'react-native-paper'
+import ButtonEl from 'components/elements/Button'
+import { mainLoginStyles } from 'styles/modules/mainlogin'
+import { commonStyles } from 'styles/common'
+import AuthHeader from 'components/modules/AuthHeader'
+import { backgroundColor, textColor } from 'styles/colors'
+import WebView from 'react-native-webview'
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin'
 
 export interface AppProps {
   navigation: NavigationProp<any, any>
 }
 
 function MainLogin(props: AppProps) {
-  const [text, setText] = React.useState('')
-  const [error, setError] = React.useState('')
-  const [inValidPIN, setInvalidPIN] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [pin, setPIN] = React.useState('')
-  const [appLockEnabled, setAppLockEnabled] = React.useState(false)
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false)
-  const [isSubmitted, setIsSubmitted] = React.useState(false)
-
-  React.useEffect(() => {
-    async function getAsyncStorage() {
-      const appLock = await AsyncStorage.getItem(ENABLED_APP_LOCK)
-      const loggedIn = await AsyncStorage.getItem(LOGGED_IN)
-      setAppLockEnabled(appLock === '1')
-      setIsLoggedIn(loggedIn === '1')
-    }
-    getAsyncStorage()
-  }, [])
+  const [googleSignIn, setGoogleSignIn] = React.useState(false)
   const { navigation } = props
-  const login = async () => {
-    setIsSubmitted(true)
-    setIsLoading(true)
-    const savedPIN = await AsyncStorage.getItem(PIN_KEY)
-    const isValidPIN = !appLockEnabled || savedPIN === pin
-    if (!isValidPIN) {
-      setInvalidPIN(true)
-    } else {
-      setInvalidPIN(false)
+
+  const handleGoogleLogin = async () => {
+    console.log('google sinin clicked')
+    const andoridClientId =
+      '775116125870-gpr0pqt3gmsjfgg06q3otvgs9kj04ihj.apps.googleusercontent.com'
+    try {
+      GoogleSignin.configure({
+        webClientId: '861583375759-8j808f3lhujcesfqfemek1beb3lfacru.apps.googleusercontent.com',
+        offlineAccess: true,
+      })
+      console.log('logged in')
+      await GoogleSignin.hasPlayServices()
+      const userInfo = await GoogleSignin.signIn()
+      console.log(userInfo)
+    } catch (error: any) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+        console.log('fsdfsd', JSON.stringify(error))
+      }
     }
-    if ((isLoggedIn && isValidPIN) || (!isLoggedIn && (await validateUser(text))))
-      setTimeout(() => {
-        setIsLoading(false)
-        if (isLoggedIn) navigation.dispatch(StackActions.replace('Home'))
-        else navigation.navigate('Otp', { name: 'Otp' })
-      }, 1500)
-    else {
-      setIsLoading(false)
-    }
-  }
-  const validateUser = async (val: string) => {
-    const fieldsToValidate = {
-      email: val,
-      phone: val,
-    }
-    const formErrors: genericObj = await InputValidator(fieldsToValidate)
-    const isValid = isEmpty(formErrors.email) || isEmpty(formErrors.phone)
-    if (!isValid) {
-      if (!isEmpty(formErrors.email) && !isEmpty(formErrors.phone)) setError(formErrors.email)
-      else if (!isEmpty(formErrors.email)) setError(formErrors.email)
-      else if (!isEmpty(formErrors.phone)) setError(formErrors.phone)
-    } else setError('')
-    return isValid
-  }
-  const setUser = async (val: string) => {
-    setText(val)
-    if (isSubmitted) await validateUser(val)
   }
 
   return (
-    <SafeAreaView>
-      <View style={authStyles.authContainer}>
-        <View>
-          <Text>Log in or sign up in seconds</Text>
+    <SafeAreaView style={{ backgroundColor: backgroundColor, flex: 1 }}>
+      <View style={commonStyles.centerAuthForms}>
+        <AuthHeader
+          title="Log in or sign up in seconds"
+          subtitle="Use your email or another service to continue with Medikmeet (it's free)!"
+          goBack={() => navigation.goBack()}
+          showBack={false}
+        />
+        <View style={mainLoginStyles.buttonsContainer}>
+          <ButtonEl icon="email-outline" onPress={() => navigation.navigate('LoginWithEmail')}>
+            CONTINUE WITH EMAIL
+          </ButtonEl>
+          <ButtonEl
+            icon="google"
+            onPress={() => {
+              handleGoogleLogin()
+            }}
+          >
+            CONTINUE WITH GOOGLE
+          </ButtonEl>
+          <ButtonEl icon="phone" onPress={() => navigation.navigate('LoginWithMobile')}>
+            CONTINUE WITH MOBILE
+          </ButtonEl>
         </View>
-        <Button mode="contained" onPress={() => navigation.navigate('LoginWithEmail')}>
-          CONTINUE WITH EMAIL
-        </Button>
-        <Button mode="contained" onPress={() => console.log('Pressed')}>
-          CONTINUE WITH GOOGLE
-        </Button>
-        <Button mode="contained" onPress={() => console.log('Pressed')}>
-          CONTINUE WITH MOBILE
-        </Button>
+        <View>
+          <Text style={{ textAlign: 'center', lineHeight: 20, color: textColor }}>
+            By continuing, you agree to <Text style={commonStyles.boldText}>Medikmeet's</Text>{' '}
+            <Text style={commonStyles.textPrimaryColor}>Terms of Use</Text>(opens in a new tab or
+            windows). read our <Text style={commonStyles.textPrimaryColor}>Privacy policy</Text>
+            (opens in a new tab or window).
+          </Text>
+        </View>
       </View>
     </SafeAreaView>
   )

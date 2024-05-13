@@ -38,6 +38,7 @@ export interface otherInputInterface extends basicInputInterface {
   keyboardType?: KeyboardTypeOptions
   borderColor?: string
   height?: number
+  placeholderTextColor?: string
 }
 
 export interface otherTimePickerInterface extends basicInputInterface {
@@ -158,4 +159,11 @@ export interface wholeFormInterface
   isTextInNepali?: boolean
   leftLabel?: any
   rightLabel?: any
+}
+
+export interface DropdownInterface {
+  id: number
+  is_active: boolean
+  name: string
+  route_type?: string
 }

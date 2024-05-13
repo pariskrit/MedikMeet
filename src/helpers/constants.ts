@@ -19,3 +19,38 @@ export const genderOptions: dropdownItems[] = [
   { label: 'Other', value: 'other' },
 ]
 
+export const medicConnectSearchTypes: dropdownItems[] = [
+  {
+    value: 'doctor',
+    label: 'Doctors',
+  },
+  {
+    value: 'topics',
+    label: 'Topics',
+  },
+]
+export const medicPostTypes: dropdownItems[] = [
+  {
+    value: 'allPosts',
+    label: 'All Posts',
+    icon: 'users',
+  },
+  {
+    value: 'myPosts',
+    label: 'Only My Posts',
+    icon: 'user',
+  },
+]
+
+export const appointmentSearchTypes: dropdownItems[] = [
+  {
+    value: 'doctor',
+    label: 'Doctors',
+  },
+  {
+    value: 'topics',
+    label: 'Topics',
+  },
+]
+
+export const buttonBackgroundPrimaryColor = '#4CC2CB'

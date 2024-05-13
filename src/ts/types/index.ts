@@ -19,7 +19,7 @@ export type genericObj = {
 
 export type dropdownItems = {
   label: string
-  value: string
+  value: string | boolean
   icon?: any
 }
 
@@ -31,4 +31,10 @@ export type profileMenuItem = {
   menuRightText?: string
   onMenuClick?: Function
   disabled?: boolean
+}
+
+export type radioGroup = {
+  id: number
+  value: string
+  label: string
 }

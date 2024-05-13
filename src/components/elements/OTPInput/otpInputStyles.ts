@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 
 export const otpInputStyles = StyleSheet.create({
   otpInputContainer: {
@@ -20,6 +20,7 @@ export const otpInputStyles = StyleSheet.create({
     width: '80%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    zIndex: Platform.OS === 'ios' ? 100 : 0,
   },
   splitBoxes: {
     borderColor: '#E4DFDF',
@@ -28,7 +29,7 @@ export const otpInputStyles = StyleSheet.create({
     padding: 12,
     minWidth: 50,
     width: 56,
-    height:56
+    height: 56,
   },
   splitBoxText: {
     fontSize: 20,

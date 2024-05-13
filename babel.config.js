@@ -13,11 +13,12 @@ module.exports = {
           '@screens/*': './src/screens/*',
           '@assets/*': './src/assets/*',
           '@services/*': './src/services/*',
-          "@interfaces/*": ["src/ts/interfaces/*"],
-          "@utils/*": ["src/utils/*"],
-          "@types/*": ["src/ts/types/*"]
+          '@interfaces/*': ['src/ts/interfaces/*'],
+          '@utils/*': ['src/utils/*'],
+          '@types/*': ['src/ts/types/*'],
         },
       },
     ],
+    'react-native-reanimated/plugin',
   ],
 }

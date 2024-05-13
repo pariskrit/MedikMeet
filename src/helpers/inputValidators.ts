@@ -44,7 +44,7 @@ const validationConditions = (condition: string, value: any) => {
     }
 
     case 'email': {
-      const isValid = !isEmpty(value) ? EmailRegexValidaion(value) : true
+      const isValid = !isEmpty(value) ? EmailRegexValidaion(value.trim()) : true
       return !isValid ? 'Invalid Email' : ''
     }
 

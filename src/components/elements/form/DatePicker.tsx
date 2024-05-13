@@ -1,82 +1,62 @@
-import { fontFamilyType } from 'helpers/constants'
 import * as React from 'react'
-import { Pressable, View } from 'react-native'
-import Modal from 'react-native-modal'
-import DatePicker, { ModernDatepickerProps } from 'react-native-modern-datepicker'
-import { borderColor, errorColor, primaryColor, textColor } from 'styles/colors'
-import { isEmpty } from 'utils'
+import InputEl from './InputEl'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import { TextInput } from 'react-native-paper'
+import { formatDate } from 'helpers/utils'
+import { View } from 'react-native'
 import Icon from '../Icon'
-import TextInput from './TextInput'
-import { useColorScheme } from 'react-native'
-import { DarkTheme } from '@react-navigation/native'
 
 interface IDatePickerProps {
+  name: string
   value: string
-  placeholder?: string
-  onDateChange?: Function
-  mode?: 'datepicker' | 'calendar' | 'monthYear' | 'time'
-  datePickerOptions?: Object
-  error?: string
+  label: string
+  error: string
+  onChange: (parm1: string, param2: string | boolean) => void
+  showKeyboard?: boolean
+  onFocus?: () => void
+  style?: Record<string, string | number>
 }
 
 const defaultProps = {
-  placeholder: '',
+  value: '',
   onDateChange: () => {},
-  mode: undefined,
-  datePickerOptions: {},
-  error: '',
+  error: undefined,
+  label: '',
 }
 const DatePickerEl: React.FunctionComponent<IDatePickerProps> = (props) => {
-  const { value, placeholder, onDateChange, mode, datePickerOptions, error } = props
-  const [modalVisible, setModalVisible] = React.useState(false)
-  const scheme = useColorScheme()
+  const { value, label, error, onChange, style, name } = props
+  const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false)
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true)
+  }
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false)
+  }
+
+  const handleConfirm = (date: any) => {
+    onChange(name, formatDate(date))
+    hideDatePicker()
+  }
 
   return (
-    <View>
-      <Pressable onPress={() => setModalVisible(true)}>
-        <View pointerEvents="none">
-          <TextInput
-            value={value}
-            hasIcon
-            icon={<Icon name="calendar" />}
-            placeholder={placeholder}
-            error={error}
-          />
-        </View>
-      </Pressable>
-      <Modal
-        isVisible={modalVisible}
-        style={{ paddingHorizontal: 10 }}
-        animationIn="slideInUp"
-        animationOut="fadeOut"
-        backdropOpacity={0.5}
-        animationOutTiming={300}
-        backdropTransitionOutTiming={0}
-        hideModalContentWhileAnimating
-        backdropTransitionInTiming={1000}
-        onBackdropPress={() => setModalVisible(false)}
-        backdropColor={scheme === 'dark' ? '#0c0c0c' : '#5e5d5d'}
-      >
-        <DatePicker
-          {...props}
-          selected={value}
-          options={{
-            defaultFont: fontFamilyType.light,
-            headerFont: fontFamilyType.bold,
-            ...datePickerOptions,
-            borderColor: 'transparent',
-            mainColor: scheme === 'dark' ? '#ffffff' : primaryColor,
-            textDefaultColor: textColor,
-            backgroundColor: scheme === 'dark' ? DarkTheme.colors.background : '#ffffff',
-          }}
-          mode={mode || 'calendar'}
-          onDateChange={(date: string) => {
-            if (onDateChange) onDateChange(date)
-            setModalVisible(false)
-          }}
-          style={{ borderRadius: 12, borderColor: borderColor }}
-        />
-      </Modal>
+    <View style={style}>
+      <InputEl
+        value={value}
+        label={label}
+        error={error}
+        right={<TextInput.Icon icon={() => <Icon name="calendar" />} />}
+        showKeyboard={false}
+        onFocus={showDatePicker}
+      />
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        date={value ? new Date(value) : new Date()}
+      />
     </View>
   )
 }

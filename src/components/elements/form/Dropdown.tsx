@@ -1,8 +1,11 @@
 import * as React from 'react'
+import { Animated, StyleSheet, Text, View } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
-import { backgroundColor, borderColor, errorColor, textColor } from 'styles/colors'
+import { HelperText } from 'react-native-paper'
+import { backgroundColor, borderColor, errorColor, primaryColor, textColor } from 'styles/colors'
 import { dropdownItems } from 'ts/types'
 import { isEmpty } from 'utils'
+import InputEl from './InputEl'
 
 interface IDropdownProps {
   value: any
@@ -15,6 +18,17 @@ interface IDropdownProps {
   prefixIcon?: React.ReactElement | null
   placeholder?: string
   searchable?: boolean
+  zIndex?: number
+  isRequired?: boolean
+  zIndexInverse?: number
+  name?: string
+  isLoading?: boolean
+  listMode?: 'SCROLLVIEW' | 'FLATLIST' | 'MODAL'
+  scroll?: boolean
+  adjustScrollMargin?: boolean
+  index?: number
+  onOpen?: Function
+  onClose?: Function
 }
 
 const defaultProps = {
@@ -27,9 +41,19 @@ const defaultProps = {
   prefixIcon: null,
   placeholder: '',
   searchable: false,
+  zIndex: 100,
+  isRequired: false,
+  zIndexInverse: 100,
+  name: '',
+  isLoading: false,
+  listMode: 'SCROLLVIEW' as 'SCROLLVIEW' | 'FLATLIST' | 'MODAL',
+  scroll: false,
+  adjustScrollMargin: false,
+  index: 1,
+  onOpen: () => {},
+  onClose: () => {},
 }
 const Dropdown: React.FunctionComponent<IDropdownProps> = (props) => {
-  const [open, setOpen] = React.useState(false)
   const {
     value,
     items,
@@ -41,89 +65,166 @@ const Dropdown: React.FunctionComponent<IDropdownProps> = (props) => {
     prefixIcon,
     placeholder,
     searchable,
+    zIndex,
+    isRequired,
+    zIndexInverse,
+    isLoading,
+    name,
+    listMode,
+    scroll,
+    adjustScrollMargin,
+    index,
+    onOpen,
+    onClose,
   } = props
-  const [drpItems, setDrpItems] = React.useState(items)
+  if (isLoading)
+    return <InputEl key={name} label={placeholder ?? ''} error={error} value={'Loading...'} />
+  const [open, setOpen] = React.useState(false)
+  const [isFocused, setIsFocused] = React.useState(false)
+  const [val, setVal] = React.useState(value)
+  const labelTranslateY = React.useRef(new Animated.Value(0)).current
+  const labelTranslateX = React.useRef(new Animated.Value(0)).current
+
   React.useEffect(() => {
-    const newDrpItems = []
-    if (!isEmpty(prefixIcon)) {
-      const prefixIconList = {
-        label: placeholder || '',
-        value: '',
-        icon: () => prefixIcon,
-        containerStyle: {
-          display: 'none',
-        }
-      }
-      newDrpItems.push(prefixIconList)
+    if (value !== val) setValue && setValue(val)
+  }, [val])
+  const onOpenList = () => {
+    Animated.timing(labelTranslateY, {
+      toValue: -25,
+      duration: 100,
+      useNativeDriver: true,
+    }).start()
+    Animated.timing(labelTranslateX, {
+      toValue: 10,
+      duration: 100,
+      useNativeDriver: true,
+    }).start()
+    setIsFocused((prev) => !prev)
+    onOpen && onOpen()
+  }
+  const onCloseList = () => {
+    if (isEmpty(value)) {
+      Animated.timing(labelTranslateY, {
+        toValue: 0,
+        duration: 100,
+        useNativeDriver: true,
+      }).start()
+      Animated.timing(labelTranslateX, {
+        toValue: 0,
+        duration: 100,
+        useNativeDriver: true,
+      }).start()
     }
-    items?.map((x) => newDrpItems.push(x))
-    setDrpItems(newDrpItems)
-  }, [])
-
-  const updateDrpItems = React.useCallback((open: boolean) => {
-    const newDrpItems = []
-    if (!isEmpty(prefixIcon)) {
-      const prefixIconList = {
-        label: placeholder || '',
-        value: '',
-        icon: () => prefixIcon,
-        containerStyle: {
-          display: 'none',
-        },
-      }
-      newDrpItems.push(prefixIconList)
-    }
-    items?.map((x) => {
-      let o = { ...x }
-      if (!open && !isEmpty(prefixIcon) && isEmpty(o.icon)) {
-        o.icon = () => prefixIcon
-      }
-      newDrpItems.push(o)
-    })
-       setDrpItems(newDrpItems)
-  }, [])
-
+    setIsFocused((prev) => !prev)
+    onClose && onClose()
+  }
   return (
-    <DropDownPicker
-      open={open}
-      value={isEmpty(value) && !isEmpty(prefixIcon) ? '' : value}
-      items={drpItems || []}
-      setOpen={setOpen}
-      setValue={(callback) => {
-        if (setValue) setValue(callback(''))
-       //updateDrpItems(false)
-      }}
-      setItems={(li) => {
-        //if (setItems) setItems(li)
-      }}
-      //onOpen={() => updateDrpItems(true)}
-      style={{
-        ...styles,
-        borderColor: !isEmpty(error) ? errorColor : borderColor,
-        backgroundColor: backgroundColor,
-      }}
-      multiple={mutiple}
-      placeholder={placeholder}
-      listItemLabelStyle={{
-        color: textColor,
-      }}
-      selectedItemLabelStyle={{
-        color: textColor,
-      }}
-      searchable={searchable}
-      dropDownContainerStyle={{
-        backgroundColor: backgroundColor,
-        borderColor: borderColor,
-      }}
-      placeholderStyle={{ color: textColor }}
-      textStyle={{ color: textColor }}
-      //   selectedItemContainerStyle={{
-      //     backgroundColor: 'grey',
-      //     display: value === '' ? 'none' : 'flex',
-      //   }}
-    />
+    <>
+      <View
+        style={{
+          ...styles,
+          zIndex: open
+            ? ((zIndex ?? 1) * (index ?? 1) ?? 1) * 10000
+            : adjustScrollMargin
+            ? 100 * (zIndex ?? 1)
+            : zIndex,
+          marginTop: adjustScrollMargin ? -150 : 6,
+          position: 'relative',
+        }}
+      >
+        <Animated.View
+          style={{
+            ...cssStyles.labelContainer,
+            // ...(isFocused ? styles.labelContainerToTop : {}),
+            //top: labelTop,
+            transform: [
+              { translateY: isEmpty(value) ? labelTranslateY : -25 },
+              { translateX: isEmpty(value) ? labelTranslateX : 10 },
+            ],
+          }}
+        >
+          {/* <Text
+          style={[
+            cssStyles.labelContainer,
+            { color: isFocused ? primaryColor : Boolean(error) ? 'red' : '#171766' },
+          ]}
+        > */}
+          <Text
+            style={[
+              {
+                color: isFocused
+                  ? primaryColor
+                  : Boolean(error)
+                  ? 'red'
+                  : isEmpty(value)
+                  ? textColor
+                  : '#171766',
+              },
+            ]}
+          >
+            {placeholder}
+          </Text>
+          {isRequired && (isFocused || !isEmpty(value)) && (
+            <Text style={cssStyles.required}>*</Text>
+          )}
+          {/* </Text> */}
+        </Animated.View>
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items ?? []}
+          loading={isLoading}
+          setOpen={setOpen}
+          setValue={setVal}
+          style={{
+            borderColor: !isEmpty(error) ? errorColor : isFocused ? primaryColor : textColor,
+            borderRadius: 30,
+            zIndex: zIndex,
+            paddingHorizontal: 20,
+            backgroundColor: Boolean(error) && !isFocused ? 'rgba(240, 128, 128,0.2)' : 'white',
+          }}
+          multiple={mutiple}
+          placeholder={''}
+          placeholderStyle={{
+            color: !isEmpty(error) ? errorColor : 'black',
+          }}
+          searchable={searchable}
+          listMode={listMode}
+          onOpen={onOpenList}
+          onClose={onCloseList}
+          disableBorderRadius={false}
+          maxHeight={200}
+          mode="BADGE"
+          zIndex={zIndex}
+          zIndexInverse={zIndexInverse}
+          containerStyle={scroll ? { height: 200 } : {}}
+        />
+      </View>
+
+      <HelperText type="error" visible={Boolean(error)}>
+        {error}
+      </HelperText>
+    </>
   )
 }
 Dropdown.defaultProps = defaultProps
+
+const cssStyles = StyleSheet.create({
+  labelContainer: {
+    position: 'absolute',
+    top: 15,
+    left: 16,
+    zIndex: 100,
+    fontSize: 12,
+    fontWeight: '400',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    paddingHorizontal: 5,
+    flexDirection: 'row',
+  },
+  required: {
+    color: 'red',
+  },
+})
 
 export default Dropdown
